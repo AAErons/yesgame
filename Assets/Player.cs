@@ -8,26 +8,18 @@ public class Player : MonoBehaviour {
     Animator anim;
     private bool facingRight;
 
-	// Use this for initialization
 	void Start () {
         myRigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         facingRight = false;
     }
 	
-	// Update is called once per frame
 	void Update () {
         float horizontal = Input.GetAxis("Horizontal");
 
         HandleMovement(horizontal);
 
-        
-
-        if (Input.GetKeyDown("space"))
-            anim.SetTrigger("attack");
-
-        if (Input.GetKeyUp("space"))
-            anim.SetTrigger("stopAttack");
+        Attack();
 
         Flip(horizontal);
 
@@ -50,5 +42,19 @@ public class Player : MonoBehaviour {
 
             transform.localScale = theScale;
         }
+    }
+
+    private void Attack()
+    {
+        if (Input.GetMouseButtonDown(0))
+            anim.SetTrigger("attack");
+
+        if (Input.GetMouseButtonUp(0))
+            anim.SetTrigger("stopAttack");
+    }
+
+    private void Jump()
+    {
+
     }
 }
