@@ -16,11 +16,14 @@ public class Player : MonoBehaviour {
     public float checkRadius;
     public LayerMask whatIsGround;
 
+    private float currentY;
+
     void Start () {
         myRigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         facingRight = false;
         jumped = false;
+        isFalling = false;
     }
 
     private void FixedUpdate()
@@ -37,24 +40,23 @@ public class Player : MonoBehaviour {
 
         Flip(horizontal);
 
-        if (myRigidBody.velocity.y < -0.1 && jumped)
+        
+
+        if (currentY > myRigidBody.velocity.y)
         {
-            isFalling = true;
-        }
-        else
+            anim.SetTrigger("stopJump");
+        }else if (currentY == myRigidBody.velocity.y)
         {
-            isFalling = false;
             jumped = false;
         }
+
+        currentY = myRigidBody.velocity.y;
 
         if (Input.GetKeyDown("space") && !jumped)
         {
             jumped = true;
             myRigidBody.velocity = Vector2.up * jumpForce;
             anim.SetTrigger("jump");
-        }else if (jumped && isFalling)
-        {
-            anim.SetTrigger("stopJump");
         }
     }
 
